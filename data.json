@@ -1,0 +1,17 @@
+{
+    "name" : "复读机",
+    "description" : "复读机只是个名字。",
+    "class" : [
+        "boot"
+    ],
+    "post_type" : {
+        "message" : {
+            "group" : [
+                "Fudu"
+            ],
+            "private" : [
+                "privates"
+            ]
+        }
+    }
+}
