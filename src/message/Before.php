@@ -101,19 +101,27 @@ class Before
     public function 踢(){
         if ($this->orderCount >= 2) {
             $lahei = false;
-            if($this->order[2]=="拉黑"){
+            if(@$this->order[2]=="拉黑"){
                 $lahei = true;
             }
-            sendMsg([
-                'group_id' => $this->data->group_id,
-                'user_id' => cq_at_qq($this->data->message),
-                'reject_add_request' => $lahei
-            ], "set_group_kick");
             $qq = cq_at_qq($this->data->message);
-            sendMsg([
-                'group_id' => $this->data->group_id,
-                'message' => "[CQ:reply,id={$this->data->message_id}]已将 {$qq} 移出本群"
-            ], "send_group_msg");
+            if(is_numeric($qq)){
+                sendMsg([
+                    'group_id' => $this->data->group_id,
+                    'user_id' => $qq,
+                    'reject_add_request' => $lahei
+                ], "set_group_kick");
+                sendMsg([
+                    'group_id' => $this->data->group_id,
+                    'message' => "[CQ:reply,id={$this->data->message_id}]已将 {$qq} 移出本群"
+                ], "send_group_msg");
+            }else{
+                sendMsg([
+                    'group_id' => $this->data->group_id,
+                    'message' => "条件不满足，用法:
+    踢 @被踢的人 (拉黑)"
+                ], "send_group_msg");
+            }
         } else {
             sendMsg([
                 'group_id' => $this->data->group_id,
