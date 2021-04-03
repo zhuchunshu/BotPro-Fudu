@@ -109,6 +109,11 @@ class Before
                 'user_id' => cq_at_qq($this->data->message),
                 'reject_add_request' => $lahei
             ], "set_group_kick");
+            $qq = cq_at_qq($this->data->message);
+            sendMsg([
+                'group_id' => $this->data->group_id,
+                'message' => "[CQ:reply,id={$this->data->message_id}]已将 {$qq} 移出本群"
+            ], "send_group_msg");
         } else {
             sendMsg([
                 'group_id' => $this->data->group_id,
