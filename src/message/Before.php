@@ -61,40 +61,54 @@ class Before
     }
     public function 禁言()
     {
-        if ($this->orderCount >= 4) {
-            $duration = $this->order[2];
-            if (is_numeric($duration)) {
-                switch ($this->order[3]) {
-                    case '分钟':
-                        $duration = $duration*60;
-                        break;
-                    case '小时':
-                        $duration = $duration*60*60;
-                        break;
-                    case '天':
-                        $duration = $duration*60*60*24;
-                        break;
-                    default:
-                        $duration = $duration*1;
-                        break;
+        $quanxian = false;
+        if($this->data->sender->role=="admin"){
+            $quanxian = true;
+        }
+        if($this->data->sender->role=="owner"){
+            $quanxian = true;
+        }
+        if($quanxian){
+            if ($this->orderCount >= 4) {
+                $duration = $this->order[2];
+                if (is_numeric($duration)) {
+                    switch ($this->order[3]) {
+                        case '分钟':
+                            $duration = $duration*60;
+                            break;
+                        case '小时':
+                            $duration = $duration*60*60;
+                            break;
+                        case '天':
+                            $duration = $duration*60*60*24;
+                            break;
+                        default:
+                            $duration = $duration*1;
+                            break;
+                    }
+                    sendMsg([
+                        'group_id' => $this->data->group_id,
+                        'user_id' => cq_at_qq($this->data->message),
+                        'duration' => $duration
+                    ], "set_group_ban");
+                } else {
+                    sendMsg([
+                        'group_id' => $this->data->group_id,
+                        'message' => "禁言时长必须是数字"
+                    ], "send_group_msg");
                 }
-                sendMsg([
-                    'group_id' => $this->data->group_id,
-                    'user_id' => cq_at_qq($this->data->message),
-                    'duration' => $duration
-                ], "set_group_ban");
             } else {
                 sendMsg([
                     'group_id' => $this->data->group_id,
-                    'message' => "禁言时长必须是数字"
+                    'message' => "条件不满足，用法:
+    禁言 @被禁言的人 时长 时间格式
+    禁言 @张三 60 秒(分钟、小时、天)"
                 ], "send_group_msg");
             }
-        } else {
+        }else{
             sendMsg([
                 'group_id' => $this->data->group_id,
-                'message' => "条件不满足，用法:
-禁言 @被禁言的人 时长 时间格式
-禁言 @张三 60 秒(分钟、小时、天)"
+                'message' => "[CQ:reply,id={$this->data->message_id}]无权操作"
             ], "send_group_msg");
         }
     }
@@ -140,7 +154,7 @@ class Before
         }else{
             sendMsg([
                 'group_id' => $this->data->group_id,
-                'message' => "无权操作"
+                'message' => "[CQ:reply,id={$this->data->message_id}]无权操作"
             ], "send_group_msg");
         }
     }

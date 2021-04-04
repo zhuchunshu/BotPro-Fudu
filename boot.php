@@ -2,6 +2,7 @@
 
 namespace App\Plugins\fudu;
 
+use App\Models\Option;
 use Dcat\Admin\Admin;
 use Dcat\Admin\Layout\Menu;
 use Illuminate\Routing\Router;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Plugins\fudu\src\Controller\GroupQunfa;
 use App\Plugins\fudu\src\Controller\PrivateQunfa;
 use App\Plugins\fudu\src\Controller\IndexController;
+use App\Plugins\fudu\src\Controller\Sendannouncement;
 
 class boot{
     
@@ -16,6 +18,7 @@ class boot{
         // $this->route();
         $this->menu();
         $this->route();
+        $this->SqlReg();
     }
 
     // 定义插件路由
@@ -37,6 +40,9 @@ class boot{
                 // 私聊群发创建
                 Route::get('/qunfa/private/create', [PrivateQunfa::class,'create']);
                 Route::post('/qunfa/private', [PrivateQunfa::class,'store']);
+                 // 批量发群公告
+                Route::get('/qunfa/announcement/create', [Sendannouncement::class,'create']);
+                Route::post('/qunfa/announcement', [Sendannouncement::class,'store']);
             });
         });        
     }
@@ -72,7 +78,26 @@ class boot{
                     'permission_id' => 'administrator', // 与权限绑定
                     'roles'         => 'administrator', // 与角色绑定
                 ],   
+                [
+                    'id'            => 103, // 此id只要保证当前的数组中是唯一的即可
+                    'title'         => '批量发群公告',
+                    'icon'          => '',
+                    'uri'           => 'fuduji/qunfa/announcement/create',
+                    'parent_id'     => 100, 
+                    'permission_id' => 'administrator', // 与权限绑定
+                    'roles'         => 'administrator', // 与角色绑定
+                ],
             ]);
         });
+    }
+    public function SqlReg(){
+        if(!Option::where('name','BOT_QQ')->count()){
+            $get_login_info = sendData([], "get_login_info");
+            Option::insert([
+                'name' => 'BOT_QQ',
+                'value' => $get_login_info['data']['user_id'],
+                'created_at' => date("Y-m-d H:i:s")
+            ]);
+        }
     }
 }

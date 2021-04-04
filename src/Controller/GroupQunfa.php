@@ -65,7 +65,7 @@ class GroupQunfa extends Controller
                     // 转化成json字符串保存到数据库
                     return json_encode($value);
             });
-            $form->number('time','间隔时长(单位:秒)');
+            $form->number('time','间隔时长(单位:秒)')->min(0)->max(5);
             $form->textarea('content', '群发内容')->required();
         });
     }
