@@ -158,4 +158,35 @@ class Before
             ], "send_group_msg");
         }
     }
+    public function 安全吗(){
+        if ($this->orderCount >= 2) {
+            $data = sendData([
+                'url' => $this->order[1]
+            ],'check_url_safely');
+            switch ($data['data']['level']) {
+                case 1:
+                    $text="安全";
+                    break;
+                case 2:
+                    $text="不知道";
+                    break;
+                case 3:
+                    $text="不安全";
+                    break;
+                default:
+                    $text = "不知道".json_encode($data);
+                    break;
+            }
+            sendMsg([
+                'group_id' => $this->data->group_id,
+                'message' => "[CQ:reply,id={$this->data->message_id}]{$text}"
+            ], "send_group_msg");
+        }else{
+            sendMsg([
+                'group_id' => $this->data->group_id,
+                'message' => "条件不满足，用法:
+安全吗 链接"
+            ], "send_group_msg");
+        }
+    }
 }

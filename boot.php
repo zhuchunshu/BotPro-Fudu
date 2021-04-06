@@ -3,6 +3,7 @@
 namespace App\Plugins\fudu;
 
 use App\Models\Option;
+use App\Plugins\fudu\src\Controller\Fuduji;
 use Dcat\Admin\Admin;
 use Dcat\Admin\Layout\Menu;
 use Illuminate\Routing\Router;
@@ -29,6 +30,8 @@ class boot{
         ], function () {
             // Route::get('fuduji', [IndexController::class,'show']);
             Route::prefix('fuduji')->group(function () {
+                // 复读机
+                Route::get('/', [Fuduji::class,'index']);
                 // 群组群发视图
                 Route::get('/qunfa/group', [GroupQunfa::class,'show']);
                 // 群组群发创建
@@ -62,6 +65,15 @@ class boot{
                 ],   
                 [
                     'id'            => 101, // 此id只要保证当前的数组中是唯一的即可
+                    'title'         => '复读机',
+                    'icon'          => '',
+                    'uri'           => 'fuduji',
+                    'parent_id'     => 100, 
+                    'permission_id' => 'administrator', // 与权限绑定
+                    'roles'         => 'administrator', // 与角色绑定
+                ],
+                [
+                    'id'            => 102, // 此id只要保证当前的数组中是唯一的即可
                     'title'         => '群组群发',
                     'icon'          => '',
                     'uri'           => 'fuduji/qunfa/group',
@@ -70,7 +82,7 @@ class boot{
                     'roles'         => 'administrator', // 与角色绑定
                 ],
                 [
-                    'id'            => 102, // 此id只要保证当前的数组中是唯一的即可
+                    'id'            => 103, // 此id只要保证当前的数组中是唯一的即可
                     'title'         => '私聊群发',
                     'icon'          => '',
                     'uri'           => 'fuduji/qunfa/private',
@@ -79,7 +91,7 @@ class boot{
                     'roles'         => 'administrator', // 与角色绑定
                 ],   
                 [
-                    'id'            => 103, // 此id只要保证当前的数组中是唯一的即可
+                    'id'            => 104, // 此id只要保证当前的数组中是唯一的即可
                     'title'         => '批量发群公告',
                     'icon'          => '',
                     'uri'           => 'fuduji/qunfa/announcement/create',
