@@ -44,7 +44,7 @@ class boot{
                 Route::get('/qunfa/private/create', [PrivateQunfa::class,'create']);
                 Route::post('/qunfa/private', [PrivateQunfa::class,'store']);
                  // 批量发群公告
-                Route::get('/qunfa/announcement/create', [Sendannouncement::class,'create']);
+                Route::get('/qunfa/announcement', [Sendannouncement::class,'create']);
                 Route::post('/qunfa/announcement', [Sendannouncement::class,'store']);
             });
         });        
@@ -94,7 +94,7 @@ class boot{
                     'id'            => 104, // 此id只要保证当前的数组中是唯一的即可
                     'title'         => '批量发群公告',
                     'icon'          => '',
-                    'uri'           => 'fuduji/qunfa/announcement/create',
+                    'uri'           => 'fuduji/qunfa/announcement',
                     'parent_id'     => 100, 
                     'permission_id' => 'administrator', // 与权限绑定
                     'roles'         => 'administrator', // 与角色绑定
