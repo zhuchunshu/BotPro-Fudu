@@ -4,6 +4,7 @@
     "class" : [
         "boot"
     ],
+    "dirname" : "fudu",
     "author" : "Inkedus",
     "url" : "http://node.tax",
     "version" : 1.2,
